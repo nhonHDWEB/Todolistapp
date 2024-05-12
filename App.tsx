@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet } from 'react-native';
+import MainNavigator from './navigation';
+import React from 'react';
+import { View } from 'react-native';
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your aaa!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar hidden={false} />
+      <View style={styles.barStyle}></View>
+      <MainNavigator />
+    </>
   );
 }
 
@@ -16,5 +19,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  barStyle: {
+    marginBottom: 50,
   },
 });
