@@ -5,16 +5,25 @@ import { TaskType } from '../utils/type';
 import uuid from 'react-native-uuid';
 interface IGlobalStore {
   tasks: TaskType[];
+  numberOfTaskFinished: () => number;
+  numberTask: () => number;
   addTask: (title: string) => void;
   deleteTask: (id: string) => void;
   markDoneTask: (id: string) => void;
   editTask: (item: TaskType) => void;
+  getFilterTask: (searchQuery: string) => void;
 }
 
 const useGlobalStore = create<IGlobalStore>()(
   persist(
     (set, get) => ({
       tasks: [],
+      numberOfTaskFinished: () => {
+        return get().tasks.filter((t) => t.isFinished).length;
+      },
+      numberTask: () => {
+        return get().tasks.length;
+      },
       addTask: (title: string) => {
         const newTask: TaskType = {
           id: uuid.v4(),
@@ -44,6 +53,15 @@ const useGlobalStore = create<IGlobalStore>()(
             return t.id !== item.id ? t : { ...t, title: item.title };
           }),
         }));
+      },
+      getFilterTask: (searchQuery: string) => {
+        const filterTask = get().tasks;
+        return filterTask.filter((t) => {
+          if (!searchQuery) {
+            return true;
+          }
+          return t.title.toLowerCase().trim().includes(searchQuery.toLowerCase().trim());
+        });
       },
     }),
     {

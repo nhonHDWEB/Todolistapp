@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ImageBackground,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
 
 const Login = () => {
   const [name, setName] = useState('');
@@ -44,13 +35,11 @@ const styles = StyleSheet.create({
   },
   body: {
     margin: 30,
-    // flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
   },
   button: {
     height: 50,
-    // backgroundColor: '#00ffff',
     alignItems: 'center',
   },
   Text: {
