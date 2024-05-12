@@ -5,44 +5,49 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { CheckBox } from '@rneui/themed';
 import { colors } from '../../constants/color';
 import { typography } from '../../constants/app';
+import { TaskType } from '../../utils/type';
+import useGlobalStore from '../../zustand/index';
 
 interface Props {
-  data?: any;
+  data?: TaskType;
+  onEditTask?: (item: TaskType) => void;
 }
 
 const CustomTask = (props: Props) => {
-  const { data } = props;
-  const [checked, setChecked] = React.useState(true);
-  const toggleCheckbox = () => setChecked(!checked);
+  const { data, onEditTask } = props;
+  const { deleteTask, markDoneTask } = useGlobalStore();
 
-  const handleDeleteTask = () => {
+  const handleDeleteTask = (id: string) => {
     Alert.alert('Warning!', 'Are you want to delete task', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'OK', onPress: () => console.log('OK Pressed') },
+      { text: 'OK', onPress: () => deleteTask(id) },
     ]);
   };
 
   const renderItem = ({ item }) => {
     return (
-      <View style={styles.vTask}>
+      <View style={styles.vTask} key={item.id}>
         <View style={styles.vLeft}>
           <CheckBox
-            checked={checked}
-            onPress={toggleCheckbox}
+            checked={item.isFinished}
+            onPress={() => markDoneTask(item.id)}
             iconType="material-community"
             checkedIcon="checkbox-marked"
             uncheckedIcon="checkbox-blank-outline"
             checkedColor="green"
           />
-          <TouchableOpacity onPress={() => console.log('sss')} activeOpacity={0.5}>
-            <CustomText text={item.title} style={checked ? styles.titleUnderline : styles.title} />
+          <TouchableOpacity onPress={() => onEditTask && onEditTask(item)} activeOpacity={0.5}>
+            <CustomText
+              text={item.title}
+              style={item.isFinished ? styles.titleUnderline : styles.title}
+            />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleDeleteTask}>
+        <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
           <Icon name="delete" size={15} />
         </TouchableOpacity>
       </View>
@@ -85,8 +90,6 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   contentContainerStyle: {
-    // borderColor: colors.text,
-    // borderBottomWidth: 1,
     marginTop: 20,
   },
 });

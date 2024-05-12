@@ -9,7 +9,6 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const [name, setName] = useState('');
